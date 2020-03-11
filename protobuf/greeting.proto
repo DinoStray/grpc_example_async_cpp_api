@@ -1,0 +1,17 @@
+syntax = "proto3";
+package grpc.example;
+
+service GreetingService {
+    rpc SubscribeGreetingBySecond (stream RequestSubscribe) returns (stream ReplyGreeting) {
+    }
+}
+
+message RequestSubscribe {
+    // request multi times to change name
+    string name = 1;
+}
+
+message ReplyGreeting {
+    // reply: "name: unix timestamp", easy to debug
+    string message = 1;
+}

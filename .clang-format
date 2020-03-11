@@ -1,0 +1,21 @@
+# see https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+# clang format not support insert blank lines for now, see:
+# https://stackoverflow.com/questions/27121457/line-breaks-between-function-definitions
+---
+Language: Cpp
+BasedOnStyle: Google
+Standard: Cpp11
+AccessModifierOffset: -2
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignEscapedNewlines: Left
+AlignOperands: true
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlwaysBreakBeforeMultilineStrings: false
+BinPackArguments: false
+BinPackParameters: false
+IndentWidth: 4
+ColumnLimit: 110
