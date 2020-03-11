@@ -35,6 +35,10 @@ void GreetingServer::run() {
             auto event = static_cast<GrpcEvent>(session_id & GRPC_EVENT_MASK);
             session_id = session_id >> GRPC_EVENT_BIT_LENGTH;
             LOG(INFO) << "session_id_: " << session_id << ", completion queue(call), event: " << event;
+            if (event == GRPC_EVENT_FINISHED) {
+                removeSession(session_id);
+                return;
+            }
             auto session = getSession(session_id);
             if (session == nullptr) {
                 LOG(INFO) << "session_id_: " << session_id << ", have been removed";
@@ -61,6 +65,10 @@ void GreetingServer::run() {
             session_id = session_id >> GRPC_EVENT_BIT_LENGTH;
             LOG(INFO) << "session_id_: " << session_id
                       << ", completion queue(notification), event: " << event;
+            if (event == GRPC_EVENT_FINISHED) {
+                removeSession(session_id);
+                return;
+            }
             auto session = getSession(session_id);
             if (session == nullptr) {
                 LOG(INFO) << "session_id_: " << session_id << ", have been removed";

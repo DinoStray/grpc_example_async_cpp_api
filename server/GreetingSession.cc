@@ -42,11 +42,8 @@ void GreetingSession::process(GrpcEvent event) {
                 status_ = SessionStatus::READY_TO_WRITE;
             }
             return;
-        case GRPC_EVENT_FINISHED:
-            GreetingServer::getInstance().removeSession(session_id_);
-            return;
         default:
-            LOG(INFO) << "session_id_: " << session_id_ << ", unknown event: " << event;
+            LOG(INFO) << "session_id_: " << session_id_ << ", unhandled event: " << event;
             return;
     }
 }

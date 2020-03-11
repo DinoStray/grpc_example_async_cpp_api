@@ -36,7 +36,6 @@ class GreetingSession {
     ::grpc::ServerAsyncReaderWriter<::grpc::example::ReplyGreeting, ::grpc::example::RequestSubscribe>
         subscribe_stream{&server_context_};
     ::grpc::example::RequestSubscribe request_{};
-    ::grpc::example::ReplyGreeting reply_{};
 
     std::string name_{};
     std::deque<std::shared_ptr<::grpc::example::ReplyGreeting>> message_queue_{};
