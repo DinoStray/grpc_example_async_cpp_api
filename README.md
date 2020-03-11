@@ -6,10 +6,10 @@ A simple example about grpc async C++ api
 
 * async C++ api
 * bi-direction stream
-* event base
+* event callback along with state machine
 * pubsub / subscriber
-* show the difference between grpc semantic: "call completion queue" and "notification completion queue"
-* graceful shutdown server and client
+* shutdown server and client gracefully
+* thread number limited
 
 ## Compile and run
 
@@ -30,10 +30,10 @@ make
 * protobuf version: 3.11.2.0
 * grpc version: 1.27.3
 
-## Complain
+## Discussion
 
-The grpc C++ async api is terrible
+I do not like the grpc C++ async api
 * https://groups.google.com/forum/#!topic/grpc-io/7P8QvBBNq_E
 
-And I hope the following feature will be accomplished as soon as possible
+Hope the following feature will be accomplished as soon as possible
 * https://github.com/grpc/grpc/issues/7352
