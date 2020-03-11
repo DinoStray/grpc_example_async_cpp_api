@@ -108,10 +108,11 @@ void GreetingServer::stop() {
     LOG(INFO) << "all sessions TryCancel() begin";
     {
         std::lock_guard<std::mutex> local_lock_guard{mutex_sessions_};
-        // if send finish, will get error: pure virtual method called
+        // send finish() will trigger error(pure virtual method called) for bi-di stream(grpc version: 1.27.3)
         // https://github.com/grpc/grpc/issues/17222
         // for (const auto &it : sessions_) { it.second->finish(); }
         for (const auto &it : sessions_) {
+            std::lock_guard<std::mutex> local_lock_guard_inner{it.second->mutex_};
             if (it.second->status_ != GrpcSessionStatus::WAIT_CONNECT) {
                 it.second->server_context_.TryCancel();
             }

@@ -6,10 +6,10 @@ A simple example about grpc async C++ api
 
 * async C++ api
 * bi-direction stream
-* event callback along with state machine
+* state machine based event callback
 * pubsub / subscriber
 * shutdown server and client gracefully
-* thread number limited
+* one service one completion queue(one thread)
 
 ## Compile and run
 
