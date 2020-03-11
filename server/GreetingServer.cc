@@ -112,7 +112,7 @@ void GreetingServer::stop() {
         // https://github.com/grpc/grpc/issues/17222
         // for (const auto &it : sessions_) { it.second->finish(); }
         for (const auto &it : sessions_) {
-            if (it.second->status_ != GreetingSession::SessionStatus::WAIT_CONNECT) {
+            if (it.second->status_ != GrpcSessionStatus::WAIT_CONNECT) {
                 it.second->server_context_.TryCancel();
             }
         }

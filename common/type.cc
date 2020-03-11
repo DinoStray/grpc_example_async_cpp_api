@@ -13,3 +13,17 @@ std::ostream& operator<<(std::ostream& os, GrpcEvent event) {
             return os << "GRPC_EVENT_FINISHED";
     }
 }
+
+std::ostream& operator<<(std::ostream& os, GrpcSessionStatus sessionStatus) {
+    // omit default case to trigger compiler warning for missing cases
+    switch (sessionStatus) {
+        case GrpcSessionStatus::WAIT_CONNECT:
+            return os << "WAIT_CONNECT";
+        case GrpcSessionStatus::READY_TO_WRITE:
+            return os << "READY_TO_WRITE";
+        case GrpcSessionStatus::WAIT_WRITE_DONE:
+            return os << "WAIT_WRITE_DONE";
+        case GrpcSessionStatus::FINISHED:
+            return os << "FINISHED";
+    }
+}

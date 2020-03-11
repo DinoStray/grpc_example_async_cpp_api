@@ -20,7 +20,7 @@ void GreetingSession::process(GrpcEvent event) {
             subscribe_stream.Read(
                 &request_,
                 reinterpret_cast<void*>(session_id_ << GRPC_EVENT_BIT_LENGTH | GRPC_EVENT_READ_DONE));
-            status_ = SessionStatus::READY_TO_WRITE;
+            status_ = GrpcSessionStatus::READY_TO_WRITE;
             GreetingServer::getInstance().addSession();
             return;
         case GRPC_EVENT_READ_DONE:
@@ -33,13 +33,13 @@ void GreetingSession::process(GrpcEvent event) {
             return;
         case GRPC_EVENT_WRITE_DONE:
             if (!message_queue_.empty()) {
-                status_ = SessionStatus::WAIT_WRITE_DONE;
+                status_ = GrpcSessionStatus::WAIT_WRITE_DONE;
                 subscribe_stream.Write(
                     *message_queue_.front(),
                     reinterpret_cast<void*>(session_id_ << GRPC_EVENT_BIT_LENGTH | GRPC_EVENT_WRITE_DONE));
                 message_queue_.pop_front();
             } else {
-                status_ = SessionStatus::READY_TO_WRITE;
+                status_ = GrpcSessionStatus::READY_TO_WRITE;
             }
             return;
         default:
@@ -49,11 +49,13 @@ void GreetingSession::process(GrpcEvent event) {
 }
 
 void GreetingSession::reply() {
-    if (status_ != SessionStatus::READY_TO_WRITE && status_ != SessionStatus::WAIT_WRITE_DONE) { return; }
+    if (status_ != GrpcSessionStatus::READY_TO_WRITE && status_ != GrpcSessionStatus::WAIT_WRITE_DONE) {
+        return;
+    }
     auto new_message = std::make_shared<::grpc::example::ReplyGreeting>();
     new_message->set_message(name_ + ": " + std::to_string(time(nullptr)));
-    if (status_ == SessionStatus::READY_TO_WRITE) {
-        status_ = SessionStatus::WAIT_WRITE_DONE;
+    if (status_ == GrpcSessionStatus::READY_TO_WRITE) {
+        status_ = GrpcSessionStatus::WAIT_WRITE_DONE;
         subscribe_stream.Write(
             *new_message,
             reinterpret_cast<void*>(session_id_ << GRPC_EVENT_BIT_LENGTH | GRPC_EVENT_WRITE_DONE));
@@ -63,22 +65,8 @@ void GreetingSession::reply() {
 }
 
 void GreetingSession::finish() {
-    if (status_ == SessionStatus::WAIT_CONNECT) { return; }
+    if (status_ == GrpcSessionStatus::WAIT_CONNECT) { return; }
     subscribe_stream.Finish(
         ::grpc::Status::CANCELLED,
         reinterpret_cast<void*>(session_id_ << GRPC_EVENT_BIT_LENGTH | GRPC_EVENT_FINISHED));
-}
-
-std::ostream& operator<<(std::ostream& os, GreetingSession::SessionStatus sessionStatus) {
-    // omit default case to trigger compiler warning for missing cases
-    switch (sessionStatus) {
-        case GreetingSession::SessionStatus::WAIT_CONNECT:
-            return os << "WAIT_CONNECT";
-        case GreetingSession::SessionStatus::READY_TO_WRITE:
-            return os << "READY_TO_WRITE";
-        case GreetingSession::SessionStatus::WAIT_WRITE_DONE:
-            return os << "WAIT_WRITE_DONE";
-        case GreetingSession::SessionStatus::FINISHED:
-            return os << "FINISHED";
-    }
 }
