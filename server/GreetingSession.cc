@@ -67,7 +67,9 @@ void GreetingSession::reply() {
 
 void GreetingSession::finish() {
     if (status_ == SessionStatus::WAIT_CONNECT) { return; }
-    server_context_.TryCancel();
+    subscribe_stream.Finish(
+        ::grpc::Status::CANCELLED,
+        reinterpret_cast<void*>(session_id_ << GRPC_EVENT_BIT_LENGTH | GRPC_EVENT_FINISHED));
 }
 
 std::ostream& operator<<(std::ostream& os, GreetingSession::SessionStatus sessionStatus) {

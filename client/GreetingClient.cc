@@ -47,7 +47,7 @@ void GreetingClient::run() {
 void GreetingClient::stop() {
     if (!running_) { return; }
     running_ = false;
-    LOG(INFO) << "stream_->TryCancel() begin";
+    LOG(INFO) << "context_->TryCancel() begin";
     context_.TryCancel();
-    LOG(INFO) << "stream_->TryCancel() end";
+    LOG(INFO) << "context_->TryCancel() end";
 }

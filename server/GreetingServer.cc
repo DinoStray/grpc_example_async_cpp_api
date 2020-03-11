@@ -97,16 +97,10 @@ void GreetingServer::run() {
 void GreetingServer::stop() {
     if (!running_) { return; }
     running_ = false;
-    LOG(INFO) << "all sessions TryCancel() begin";
-    // TODO: have to TryCancel(), otherwise the completion queue Next() not return if there is still connected
-    // session(async reading or writing)
+    LOG(INFO) << "all sessions finish() begin";
     {
         std::lock_guard<std::mutex> local_lock_guard{mutex_sessions_};
-        for (const auto &it : sessions_) {
-            if (it.second->status_ != GreetingSession::SessionStatus::WAIT_CONNECT) {
-                it.second->server_context_.TryCancel();
-            }
-        }
+        for (const auto &it : sessions_) { it.second->finish(); }
     }
     LOG(INFO) << "server_->Shutdown() begin";
     server_->Shutdown();
