@@ -37,7 +37,7 @@ void GreetingServer::run() {
             LOG(INFO) << "session_id_: " << session_id << ", completion queue(call), event: " << event;
             if (event == GRPC_EVENT_FINISHED) {
                 removeSession(session_id);
-                return;
+                continue;
             }
             auto session = getSession(session_id);
             if (session == nullptr) {
@@ -67,7 +67,7 @@ void GreetingServer::run() {
                       << ", completion queue(notification), event: " << event;
             if (event == GRPC_EVENT_FINISHED) {
                 removeSession(session_id);
-                return;
+                continue;
             }
             auto session = getSession(session_id);
             if (session == nullptr) {
@@ -105,10 +105,17 @@ void GreetingServer::run() {
 void GreetingServer::stop() {
     if (!running_) { return; }
     running_ = false;
-    LOG(INFO) << "all sessions finish() begin";
+    LOG(INFO) << "all sessions TryCancel() begin";
     {
         std::lock_guard<std::mutex> local_lock_guard{mutex_sessions_};
-        for (const auto &it : sessions_) { it.second->finish(); }
+        // if send finish, will get error: pure virtual method called
+        // https://github.com/grpc/grpc/issues/17222
+        // for (const auto &it : sessions_) { it.second->finish(); }
+        for (const auto &it : sessions_) {
+            if (it.second->status_ != GreetingSession::SessionStatus::WAIT_CONNECT) {
+                it.second->server_context_.TryCancel();
+            }
+        }
     }
     LOG(INFO) << "server_->Shutdown() begin";
     server_->Shutdown();
