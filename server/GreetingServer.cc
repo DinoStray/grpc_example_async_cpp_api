@@ -32,8 +32,8 @@ void GreetingServer::run() {
         bool ok;
         // rpc event "read done / write done / close(already connected)" call-back by this completion queue
         while (completion_queue_call_->Next(reinterpret_cast<void **>(&session_id), &ok)) {
-            auto event = static_cast<GrpcEvent>(session_id % GRPC_EVENT_MAX);
-            session_id = session_id - event;
+            auto event = static_cast<GrpcEvent>(session_id & GRPC_EVENT_MASK);
+            session_id = session_id >> GRPC_EVENT_BIT_LENGTH;
             LOG(INFO) << "session_id_: " << session_id << ", completion queue(call), event: " << event;
             auto session = getSession(session_id);
             if (session == nullptr) {
@@ -57,8 +57,8 @@ void GreetingServer::run() {
         bool ok;
         // rpc event "new connection / close(waiting for connect)" call-back by this completion queue
         while (completion_queue_notification_->Next(reinterpret_cast<void **>(&session_id), &ok)) {
-            auto event = static_cast<GrpcEvent>(session_id % GRPC_EVENT_MAX);
-            session_id = session_id - event;
+            auto event = static_cast<GrpcEvent>(session_id & GRPC_EVENT_MASK);
+            session_id = session_id >> GRPC_EVENT_BIT_LENGTH;
             LOG(INFO) << "session_id_: " << session_id
                       << ", completion queue(notification), event: " << event;
             auto session = getSession(session_id);
@@ -119,7 +119,7 @@ void GreetingServer::stop() {
 }
 
 std::shared_ptr<GreetingSession> GreetingServer::addSession() {
-    auto new_session_id = (session_id_allocator_ += GRPC_EVENT_MAX);
+    auto new_session_id = session_id_allocator_++;
     auto new_session = std::make_shared<GreetingSession>(new_session_id);
     if (!new_session->init()) {
         LOG(ERROR) << "init new session failed";
