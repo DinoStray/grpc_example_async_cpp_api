@@ -36,12 +36,13 @@ void GreetingServer::run() {
             session_id = session_id >> GRPC_EVENT_BIT_LENGTH;
             LOG(DEBUG) << "session_id_: " << session_id << ", completion queue(call), event: " << event;
             if (event == GRPC_EVENT_FINISHED) {
+                LOG(INFO) << "session_id_: " << session_id << ", event: " << event;
                 removeSession(session_id);
                 continue;
             }
             auto session = getSession(session_id);
             if (session == nullptr) {
-                LOG(DEBUG) << "session_id_: " << session_id << ", have been removed";
+                LOG(INFO) << "session_id_: " << session_id << ", have been removed";
                 continue;
             }
             if (!ok) {
@@ -92,7 +93,10 @@ void GreetingServer::run() {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
             {
                 std::lock_guard<std::mutex> local_lock_guard{mutex_sessions_};
-                for (const auto &it : sessions_) { it.second->reply(); }
+                for (const auto &it : sessions_) {
+                    std::lock_guard<std::mutex> inner_local_lock_guard{it.second->mutex_};
+                    it.second->reply();
+                }
             }
         }
     });
