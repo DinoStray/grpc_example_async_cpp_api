@@ -14,7 +14,7 @@ bool GreetingSession::init() {
 }
 
 void GreetingSession::process(GrpcEvent event) {
-    LOG(INFO) << "session_id_: " << session_id_ << ", current status: " << status_ << ", event: " << event;
+    LOG(DEBUG) << "session_id_: " << session_id_ << ", current status: " << status_ << ", event: " << event;
     switch (event) {
         case GRPC_EVENT_CONNECTED:
             subscribe_stream.Read(
@@ -24,7 +24,12 @@ void GreetingSession::process(GrpcEvent event) {
             GreetingServer::getInstance().addSession();
             return;
         case GRPC_EVENT_READ_DONE:
-            LOG(INFO) << "session_id_: " << session_id_ << ", new request: " << request_.ShortDebugString();
+            LOG(DEBUG) << "session_id_: " << session_id_ << ", new request: " << request_.ShortDebugString();
+            performance_.setName(name_);
+            performance_.add(std::chrono::duration_cast<std::chrono::nanoseconds>(
+                                 std::chrono::system_clock::now().time_since_epoch())
+                                 .count() -
+                             request_.current_nanosecond());
             name_ = request_.name();
             subscribe_stream.Read(
                 &request_,
@@ -43,7 +48,7 @@ void GreetingSession::process(GrpcEvent event) {
             }
             return;
         default:
-            LOG(INFO) << "session_id_: " << session_id_ << ", unhandled event: " << event;
+            LOG(DEBUG) << "session_id_: " << session_id_ << ", unhandled event: " << event;
             return;
     }
 }
@@ -53,7 +58,10 @@ void GreetingSession::reply() {
         return;
     }
     auto new_message = std::make_shared<::grpc::example::ReplyGreeting>();
-    new_message->set_message(name_ + ": " + std::to_string(time(nullptr)));
+    new_message->set_message(name_ + ": " + std::to_string(++reply_times_));
+    new_message->set_current_nanosecond(std::chrono::duration_cast<std::chrono::nanoseconds>(
+                                            std::chrono::system_clock::now().time_since_epoch())
+                                            .count());
     if (status_ == GrpcSessionStatus::READY_TO_WRITE) {
         status_ = GrpcSessionStatus::WAIT_WRITE_DONE;
         subscribe_stream.Write(

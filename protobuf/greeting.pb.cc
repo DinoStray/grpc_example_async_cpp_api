@@ -65,16 +65,18 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_greeting_2eproto::offsets[] PR
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::grpc::example::RequestSubscribe, name_),
+  PROTOBUF_FIELD_OFFSET(::grpc::example::RequestSubscribe, current_nanosecond_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::grpc::example::ReplyGreeting, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::grpc::example::ReplyGreeting, message_),
+  PROTOBUF_FIELD_OFFSET(::grpc::example::ReplyGreeting, current_nanosecond_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::grpc::example::RequestSubscribe)},
-  { 6, -1, sizeof(::grpc::example::ReplyGreeting)},
+  { 7, -1, sizeof(::grpc::example::ReplyGreeting)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -83,12 +85,13 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_greeting_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\016greeting.proto\022\014grpc.example\" \n\020Reques"
-  "tSubscribe\022\014\n\004name\030\001 \001(\t\" \n\rReplyGreetin"
-  "g\022\017\n\007message\030\001 \001(\t2q\n\017GreetingService\022^\n"
-  "\031SubscribeGreetingBySecond\022\036.grpc.exampl"
-  "e.RequestSubscribe\032\033.grpc.example.ReplyG"
-  "reeting\"\000(\0010\001b\006proto3"
+  "\n\016greeting.proto\022\014grpc.example\"<\n\020Reques"
+  "tSubscribe\022\014\n\004name\030\001 \001(\t\022\032\n\022current_nano"
+  "second\030\002 \001(\004\"<\n\rReplyGreeting\022\017\n\007message"
+  "\030\001 \001(\t\022\032\n\022current_nanosecond\030\002 \001(\0042q\n\017Gr"
+  "eetingService\022^\n\031SubscribeGreetingBySeco"
+  "nd\022\036.grpc.example.RequestSubscribe\032\033.grp"
+  "c.example.ReplyGreeting\"\000(\0010\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_greeting_2eproto_deps[1] = {
 };
@@ -99,7 +102,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_gre
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_greeting_2eproto_once;
 static bool descriptor_table_greeting_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_greeting_2eproto = {
-  &descriptor_table_greeting_2eproto_initialized, descriptor_table_protodef_greeting_2eproto, "greeting.proto", 221,
+  &descriptor_table_greeting_2eproto_initialized, descriptor_table_protodef_greeting_2eproto, "greeting.proto", 277,
   &descriptor_table_greeting_2eproto_once, descriptor_table_greeting_2eproto_sccs, descriptor_table_greeting_2eproto_deps, 2, 0,
   schemas, file_default_instances, TableStruct_greeting_2eproto::offsets,
   file_level_metadata_greeting_2eproto, 2, file_level_enum_descriptors_greeting_2eproto, file_level_service_descriptors_greeting_2eproto,
@@ -131,12 +134,14 @@ RequestSubscribe::RequestSubscribe(const RequestSubscribe& from)
   if (!from._internal_name().empty()) {
     name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
+  current_nanosecond_ = from.current_nanosecond_;
   // @@protoc_insertion_point(copy_constructor:grpc.example.RequestSubscribe)
 }
 
 void RequestSubscribe::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RequestSubscribe_greeting_2eproto.base);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  current_nanosecond_ = PROTOBUF_ULONGLONG(0);
 }
 
 RequestSubscribe::~RequestSubscribe() {
@@ -164,6 +169,7 @@ void RequestSubscribe::Clear() {
   (void) cached_has_bits;
 
   name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  current_nanosecond_ = PROTOBUF_ULONGLONG(0);
   _internal_metadata_.Clear();
 }
 
@@ -180,6 +186,13 @@ const char* RequestSubscribe::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "grpc.example.RequestSubscribe.name"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint64 current_nanosecond = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          current_nanosecond_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -219,6 +232,12 @@ failure:
         1, this->_internal_name(), target);
   }
 
+  // uint64 current_nanosecond = 2;
+  if (this->current_nanosecond() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(2, this->_internal_current_nanosecond(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
@@ -240,6 +259,13 @@ size_t RequestSubscribe::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_name());
+  }
+
+  // uint64 current_nanosecond = 2;
+  if (this->current_nanosecond() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_current_nanosecond());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -277,6 +303,9 @@ void RequestSubscribe::MergeFrom(const RequestSubscribe& from) {
 
     name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
+  if (from.current_nanosecond() != 0) {
+    _internal_set_current_nanosecond(from._internal_current_nanosecond());
+  }
 }
 
 void RequestSubscribe::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -302,6 +331,7 @@ void RequestSubscribe::InternalSwap(RequestSubscribe* other) {
   _internal_metadata_.Swap(&other->_internal_metadata_);
   name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(current_nanosecond_, other->current_nanosecond_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RequestSubscribe::GetMetadata() const {
@@ -330,12 +360,14 @@ ReplyGreeting::ReplyGreeting(const ReplyGreeting& from)
   if (!from._internal_message().empty()) {
     message_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.message_);
   }
+  current_nanosecond_ = from.current_nanosecond_;
   // @@protoc_insertion_point(copy_constructor:grpc.example.ReplyGreeting)
 }
 
 void ReplyGreeting::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ReplyGreeting_greeting_2eproto.base);
   message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  current_nanosecond_ = PROTOBUF_ULONGLONG(0);
 }
 
 ReplyGreeting::~ReplyGreeting() {
@@ -363,6 +395,7 @@ void ReplyGreeting::Clear() {
   (void) cached_has_bits;
 
   message_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  current_nanosecond_ = PROTOBUF_ULONGLONG(0);
   _internal_metadata_.Clear();
 }
 
@@ -379,6 +412,13 @@ const char* ReplyGreeting::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
           auto str = _internal_mutable_message();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "grpc.example.ReplyGreeting.message"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint64 current_nanosecond = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          current_nanosecond_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -418,6 +458,12 @@ failure:
         1, this->_internal_message(), target);
   }
 
+  // uint64 current_nanosecond = 2;
+  if (this->current_nanosecond() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(2, this->_internal_current_nanosecond(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
@@ -439,6 +485,13 @@ size_t ReplyGreeting::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_message());
+  }
+
+  // uint64 current_nanosecond = 2;
+  if (this->current_nanosecond() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_current_nanosecond());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -476,6 +529,9 @@ void ReplyGreeting::MergeFrom(const ReplyGreeting& from) {
 
     message_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.message_);
   }
+  if (from.current_nanosecond() != 0) {
+    _internal_set_current_nanosecond(from._internal_current_nanosecond());
+  }
 }
 
 void ReplyGreeting::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -501,6 +557,7 @@ void ReplyGreeting::InternalSwap(ReplyGreeting* other) {
   _internal_metadata_.Swap(&other->_internal_metadata_);
   message_.Swap(&other->message_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(current_nanosecond_, other->current_nanosecond_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ReplyGreeting::GetMetadata() const {

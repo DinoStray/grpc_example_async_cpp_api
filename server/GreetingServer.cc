@@ -34,18 +34,18 @@ void GreetingServer::run() {
         while (completion_queue_call_->Next(reinterpret_cast<void **>(&session_id), &ok)) {
             auto event = static_cast<GrpcEvent>(session_id & GRPC_EVENT_MASK);
             session_id = session_id >> GRPC_EVENT_BIT_LENGTH;
-            LOG(INFO) << "session_id_: " << session_id << ", completion queue(call), event: " << event;
+            LOG(DEBUG) << "session_id_: " << session_id << ", completion queue(call), event: " << event;
             if (event == GRPC_EVENT_FINISHED) {
                 removeSession(session_id);
                 continue;
             }
             auto session = getSession(session_id);
             if (session == nullptr) {
-                LOG(INFO) << "session_id_: " << session_id << ", have been removed";
+                LOG(DEBUG) << "session_id_: " << session_id << ", have been removed";
                 continue;
             }
             if (!ok) {
-                LOG(INFO) << "session_id_: " << session_id << ", rpc call closed";
+                LOG(DEBUG) << "session_id_: " << session_id << ", rpc call closed";
                 removeSession(session_id);
                 continue;
             }
@@ -71,11 +71,11 @@ void GreetingServer::run() {
             }
             auto session = getSession(session_id);
             if (session == nullptr) {
-                LOG(INFO) << "session_id_: " << session_id << ", have been removed";
+                LOG(DEBUG) << "session_id_: " << session_id << ", have been removed";
                 continue;
             }
             if (!ok) {
-                LOG(INFO) << "session_id_: " << session_id << ", rpc call closed";
+                LOG(DEBUG) << "session_id_: " << session_id << ", rpc call closed";
                 removeSession(session_id);
                 continue;
             }
@@ -89,7 +89,7 @@ void GreetingServer::run() {
     });
     std::thread thread_publish_greeting([this] {
         while (running_) {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             {
                 std::lock_guard<std::mutex> local_lock_guard{mutex_sessions_};
                 for (const auto &it : sessions_) { it.second->reply(); }

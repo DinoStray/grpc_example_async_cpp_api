@@ -1,4 +1,4 @@
-#include "type.h"
+#include "GrpcType.h"
 
 std::ostream& operator<<(std::ostream& os, GrpcEvent event) {
     // omit default case to trigger compiler warning for missing cases

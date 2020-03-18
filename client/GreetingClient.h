@@ -1,11 +1,13 @@
-#ifndef GRPC_EXAMPLE_GREETINGCLIENT_H
-#define GRPC_EXAMPLE_GREETINGCLIENT_H
+#ifndef GRPC_EXAMPLE_GREETING_CLIENT_H
+#define GRPC_EXAMPLE_GREETING_CLIENT_H
 
 #include <greeting.grpc.pb.h>
 #include <grpc/grpc.h>
 #include <grpcpp/channel.h>
 
 #include <memory>
+
+#include "Performance.h"
 
 class GreetingClient {
   public:
@@ -23,7 +25,7 @@ class GreetingClient {
         return kSingleInstance;
     }
 
-    bool init(const std::string &server);
+    bool init(const std::string &name, const std::string &server);
 
     void run();
 
@@ -42,6 +44,8 @@ class GreetingClient {
     std::unique_ptr<
         ::grpc::ClientReaderWriter<::grpc::example::RequestSubscribe, ::grpc::example::ReplyGreeting>>
         stream_{};
+    Performance performance_{};
+    std::string name_{};
 };
 
-#endif  // GRPC_EXAMPLE_GREETINGCLIENT_H
+#endif  // GRPC_EXAMPLE_GREETING_CLIENT_H

@@ -4,8 +4,8 @@
 #include <greeting.grpc.pb.h>
 #include <grpcpp/server.h>
 
-#include "../common/type.h"
 #include "GreetingSession.h"
+#include "GrpcType.h"
 
 class GreetingServer {
   public:

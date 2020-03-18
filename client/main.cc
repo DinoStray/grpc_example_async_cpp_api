@@ -17,8 +17,20 @@ int main(int argc, const char **argv) {
         return 1;
     }
 
+    std::string client_name{"client_name"};
+    if (argc >= 2) {
+        client_name = argv[1];
+        LOG(INFO) << "client name: " << client_name;
+    }
+
+    std::string server_address{"localhost:6666"};
+    if (argc >= 3) {
+        server_address = argv[2];
+        LOG(INFO) << "server address: " << server_address;
+    }
+
     try {
-        if (!GreetingClient::getInstance().init("localhost:6666")) {
+        if (!GreetingClient::getInstance().init(client_name, server_address)) {
             LOG(INFO) << "GreetingClient init failed";
             return 1;
         }

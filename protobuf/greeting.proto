@@ -9,9 +9,11 @@ service GreetingService {
 message RequestSubscribe {
     // request multi times to change name
     string name = 1;
+    uint64 current_nanosecond = 2;
 }
 
 message ReplyGreeting {
-    // reply: "name: unix timestamp", easy to debug
+    // reply: "name: count"
     string message = 1;
+    uint64 current_nanosecond = 2;
 }

@@ -10,7 +10,8 @@
 #include <mutex>
 #include <string>
 
-#include "../common/type.h"
+#include "GrpcType.h"
+#include "Performance.h"
 
 class GreetingSession {
   public:
@@ -36,6 +37,8 @@ class GreetingSession {
 
     std::string name_{};
     std::deque<std::shared_ptr<::grpc::example::ReplyGreeting>> message_queue_{};
+    Performance performance_{};
+    uint64_t reply_times_{0};
 };
 
 #endif  // GRPC_EXAMPLE_TIME_SERVER_SESSION_H

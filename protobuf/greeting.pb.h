@@ -180,6 +180,7 @@ class RequestSubscribe :
 
   enum : int {
     kNameFieldNumber = 1,
+    kCurrentNanosecondFieldNumber = 2,
   };
   // string name = 1;
   void clear_name();
@@ -197,12 +198,22 @@ class RequestSubscribe :
   std::string* _internal_mutable_name();
   public:
 
+  // uint64 current_nanosecond = 2;
+  void clear_current_nanosecond();
+  ::PROTOBUF_NAMESPACE_ID::uint64 current_nanosecond() const;
+  void set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_current_nanosecond() const;
+  void _internal_set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:grpc.example.RequestSubscribe)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 current_nanosecond_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_greeting_2eproto;
 };
@@ -315,6 +326,7 @@ class ReplyGreeting :
 
   enum : int {
     kMessageFieldNumber = 1,
+    kCurrentNanosecondFieldNumber = 2,
   };
   // string message = 1;
   void clear_message();
@@ -332,12 +344,22 @@ class ReplyGreeting :
   std::string* _internal_mutable_message();
   public:
 
+  // uint64 current_nanosecond = 2;
+  void clear_current_nanosecond();
+  ::PROTOBUF_NAMESPACE_ID::uint64 current_nanosecond() const;
+  void set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_current_nanosecond() const;
+  void _internal_set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:grpc.example.ReplyGreeting)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr message_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 current_nanosecond_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_greeting_2eproto;
 };
@@ -412,6 +434,26 @@ inline void RequestSubscribe::set_allocated_name(std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:grpc.example.RequestSubscribe.name)
 }
 
+// uint64 current_nanosecond = 2;
+inline void RequestSubscribe::clear_current_nanosecond() {
+  current_nanosecond_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 RequestSubscribe::_internal_current_nanosecond() const {
+  return current_nanosecond_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 RequestSubscribe::current_nanosecond() const {
+  // @@protoc_insertion_point(field_get:grpc.example.RequestSubscribe.current_nanosecond)
+  return _internal_current_nanosecond();
+}
+inline void RequestSubscribe::_internal_set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  current_nanosecond_ = value;
+}
+inline void RequestSubscribe::set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_current_nanosecond(value);
+  // @@protoc_insertion_point(field_set:grpc.example.RequestSubscribe.current_nanosecond)
+}
+
 // -------------------------------------------------------------------
 
 // ReplyGreeting
@@ -474,6 +516,26 @@ inline void ReplyGreeting::set_allocated_message(std::string* message) {
   }
   message_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), message);
   // @@protoc_insertion_point(field_set_allocated:grpc.example.ReplyGreeting.message)
+}
+
+// uint64 current_nanosecond = 2;
+inline void ReplyGreeting::clear_current_nanosecond() {
+  current_nanosecond_ = PROTOBUF_ULONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 ReplyGreeting::_internal_current_nanosecond() const {
+  return current_nanosecond_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 ReplyGreeting::current_nanosecond() const {
+  // @@protoc_insertion_point(field_get:grpc.example.ReplyGreeting.current_nanosecond)
+  return _internal_current_nanosecond();
+}
+inline void ReplyGreeting::_internal_set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  current_nanosecond_ = value;
+}
+inline void ReplyGreeting::set_current_nanosecond(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_current_nanosecond(value);
+  // @@protoc_insertion_point(field_set:grpc.example.ReplyGreeting.current_nanosecond)
 }
 
 #ifdef __GNUC__

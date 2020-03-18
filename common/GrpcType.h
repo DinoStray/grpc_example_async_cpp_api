@@ -1,5 +1,5 @@
-#ifndef GRPC_EXAMPLE_TYPE_H
-#define GRPC_EXAMPLE_TYPE_H
+#ifndef GRPC_EXAMPLE_GRPC_TYPE_H
+#define GRPC_EXAMPLE_GRPC_TYPE_H
 #include <iostream>
 
 #define GRPC_EVENT_MASK 0x3u
@@ -16,4 +16,4 @@ std::ostream& operator<<(std::ostream& os, GrpcEvent event);
 enum class GrpcSessionStatus { WAIT_CONNECT, READY_TO_WRITE, WAIT_WRITE_DONE, FINISHED };
 std::ostream& operator<<(std::ostream& os, GrpcSessionStatus sessionStatus);
 
-#endif  // GRPC_EXAMPLE_TYPE_H
+#endif  // GRPC_EXAMPLE_GRPC_TYPE_H
